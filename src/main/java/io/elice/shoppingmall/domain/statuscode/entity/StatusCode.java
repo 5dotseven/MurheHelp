@@ -15,4 +15,5 @@ public class StatusCode extends BassEntity{
     private Long id;
 
     private String name;
+
 }

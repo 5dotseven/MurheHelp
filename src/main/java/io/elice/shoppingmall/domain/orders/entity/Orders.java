@@ -40,6 +40,10 @@ public class Orders extends BassEntity {
     @OneToOne(mappedBy = "orders")
     private Delivery delivery;
 
+    private String getAddress(){
+        return delivery.getAddress();
+    }
+
     @OneToOne(mappedBy = "orders")
     private Bill bill;
 
