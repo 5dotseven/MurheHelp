@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,8 @@ public class FirstCategoryController {
 
     private final FirstCategoryService firstCategoryService;
 
-    @GetMapping()
+    @GetMapping("")
+    @PreAuthorize("hasAnyAuthority('GREEN') or hasAuthority(#role)")
     @Operation(summary = "대카테고리 전체 조회", description = "대카테고리 전체 조회")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = List.class))),
@@ -41,8 +43,8 @@ public class FirstCategoryController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "성공", content = @Content(schema = @Schema(implementation = FirstCategoryDetailResult.class))),
             @ApiResponse(responseCode = "500", description = "에러", content = @Content(schema = @Schema(implementation = FirstCategoryDetailResult.class)))})
-    public ResponseEntity<FirstCategoryDetailResult> findById(@PathVariable(name = "firstCategoryId") Long firstCategoryId) {
-        FirstCategoryDetailResult byId = firstCategoryService.findById(firstCategoryId);
+    public ResponseEntity<FirstCategoryResult> findById(@PathVariable(name = "firstCategoryId") Long firstCategoryId) {
+        FirstCategoryResult byId = firstCategoryService.findById(firstCategoryId);
         return new ResponseEntity<>(byId, HttpStatus.OK);
     }
 }

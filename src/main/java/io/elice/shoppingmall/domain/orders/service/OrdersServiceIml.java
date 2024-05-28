@@ -35,7 +35,6 @@ public class OrdersServiceIml implements OrdersService {
     private final StatusCodeRepository statusCodeRepository;
     private final OrderItemRepository orderItemRepository;
     private final CartRepository cartRepository;
-    private final BillRepository billRepository;
     private final DeliveryRepository deliveryRepository;
     private final OrdersResultMapper ordersResultMapper;
 
@@ -51,7 +50,7 @@ public class OrdersServiceIml implements OrdersService {
                 .amount(0L)
                 .statusCode(statusCodeRepository.findById(payload.getStatusId()).orElseThrow())
                 .build());
-        deliveryRepository.save(Delivery.builder().address(payload.getAddress()).orders(saved).build());
+        deliveryRepository.save(Delivery.builder().address(payload.getAddress()).orders(saved).statusCode(statusCodeRepository.findById(payload.getStatusId()).orElseThrow()).build());
 
         List<Cart> cartList = payload.getCartId().stream().map(c -> cartRepository.findById(c).orElseThrow()).toList();
 

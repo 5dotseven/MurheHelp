@@ -46,6 +46,9 @@ public class FirstCategoryServiceImpl implements FirstCategoryService {
 
     @Override
     public List<FirstCategoryResult> findFirstCategories(String role) {
+        if (!StringUtils.hasText(role)) {
+            return firstCategoryResultMapper.toDtoList(firstCategoryRepository.findAll());
+        }
         List<FirstCategory> all = firstCategoryRepository.findAllByRole(role);
         List<FirstCategoryResult> dtoList = firstCategoryResultMapper.toDtoList(all);
         return dtoList;
@@ -62,10 +65,10 @@ public class FirstCategoryServiceImpl implements FirstCategoryService {
     }
 
     @Override
-    public FirstCategoryDetailResult findById(Long id) {
+    public FirstCategoryResult findById(Long id) {
         FirstCategory firstCategory = firstCategoryRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 대카테고리가 없습니다. id=" + id));
-        FirstCategoryDetailResult dto = firstCategoryDetailResultMapper.toDto(firstCategory);
+        FirstCategoryResult dto = firstCategoryResultMapper.toDto(firstCategory);
         return dto;
     }
 
